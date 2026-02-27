@@ -1,0 +1,75 @@
+<html>
+<head>
+<title>app.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #7a7e85;}
+.s4 { color: #6aab73;}
+.s5 { color: #2aacb8;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+app.py</font>
+</center></td></tr></table>
+<pre><span class="s0">from </span><span class="s1">flask </span><span class="s0">import </span><span class="s1">Flask</span><span class="s2">, </span><span class="s1">render_template</span><span class="s2">, </span><span class="s1">request</span>
+<span class="s0">import </span><span class="s1">random</span>
+
+<span class="s1">app </span><span class="s2">= </span><span class="s1">Flask</span><span class="s2">(</span><span class="s1">__name__</span><span class="s2">)</span>
+
+<span class="s3"># База фильмов с изображениями</span>
+<span class="s1">movies </span><span class="s2">= [</span>
+    <span class="s2">{</span><span class="s4">&quot;title&quot;</span><span class="s2">: </span><span class="s4">&quot;Интерстеллар&quot;</span><span class="s2">, </span><span class="s4">&quot;genre&quot;</span><span class="s2">: </span><span class="s4">&quot;фантастика&quot;</span><span class="s2">, </span><span class="s4">&quot;mood&quot;</span><span class="s2">: </span><span class="s4">&quot;серьёзное&quot;</span><span class="s2">, </span><span class="s4">&quot;year&quot;</span><span class="s2">: </span><span class="s4">&quot;новый&quot;</span><span class="s2">, </span><span class="s4">&quot;image&quot;</span><span class="s2">: </span><span class="s4">&quot;images/interstellar.jpg&quot;</span><span class="s2">},</span>
+    <span class="s2">{</span><span class="s4">&quot;title&quot;</span><span class="s2">: </span><span class="s4">&quot;1+1&quot;</span><span class="s2">, </span><span class="s4">&quot;genre&quot;</span><span class="s2">: </span><span class="s4">&quot;комедия&quot;</span><span class="s2">, </span><span class="s4">&quot;mood&quot;</span><span class="s2">: </span><span class="s4">&quot;весёлое&quot;</span><span class="s2">, </span><span class="s4">&quot;year&quot;</span><span class="s2">: </span><span class="s4">&quot;старый&quot;</span><span class="s2">, </span><span class="s4">&quot;image&quot;</span><span class="s2">: </span><span class="s4">&quot;images/intouchables.jpg&quot;</span><span class="s2">},</span>
+    <span class="s2">{</span><span class="s4">&quot;title&quot;</span><span class="s2">: </span><span class="s4">&quot;Заклятие&quot;</span><span class="s2">, </span><span class="s4">&quot;genre&quot;</span><span class="s2">: </span><span class="s4">&quot;ужасы&quot;</span><span class="s2">, </span><span class="s4">&quot;mood&quot;</span><span class="s2">: </span><span class="s4">&quot;страшное&quot;</span><span class="s2">, </span><span class="s4">&quot;year&quot;</span><span class="s2">: </span><span class="s4">&quot;новый&quot;</span><span class="s2">, </span><span class="s4">&quot;image&quot;</span><span class="s2">: </span><span class="s4">&quot;images/conjuring.jpg&quot;</span><span class="s2">},</span>
+    <span class="s2">{</span><span class="s4">&quot;title&quot;</span><span class="s2">: </span><span class="s4">&quot;Титаник&quot;</span><span class="s2">, </span><span class="s4">&quot;genre&quot;</span><span class="s2">: </span><span class="s4">&quot;романтика&quot;</span><span class="s2">, </span><span class="s4">&quot;mood&quot;</span><span class="s2">: </span><span class="s4">&quot;грустное&quot;</span><span class="s2">, </span><span class="s4">&quot;year&quot;</span><span class="s2">: </span><span class="s4">&quot;старый&quot;</span><span class="s2">, </span><span class="s4">&quot;image&quot;</span><span class="s2">: </span><span class="s4">&quot;images/titanic.jpg&quot;</span><span class="s2">},</span>
+    <span class="s2">{</span><span class="s4">&quot;title&quot;</span><span class="s2">: </span><span class="s4">&quot;Мстители&quot;</span><span class="s2">, </span><span class="s4">&quot;genre&quot;</span><span class="s2">: </span><span class="s4">&quot;боевик&quot;</span><span class="s2">, </span><span class="s4">&quot;mood&quot;</span><span class="s2">: </span><span class="s4">&quot;захватывающее&quot;</span><span class="s2">, </span><span class="s4">&quot;year&quot;</span><span class="s2">: </span><span class="s4">&quot;новый&quot;</span><span class="s2">, </span><span class="s4">&quot;image&quot;</span><span class="s2">: </span><span class="s4">&quot;images/avengers.jpg&quot;</span><span class="s2">},</span>
+    <span class="s2">{</span><span class="s4">&quot;title&quot;</span><span class="s2">: </span><span class="s4">&quot;Гарри Поттер&quot;</span><span class="s2">, </span><span class="s4">&quot;genre&quot;</span><span class="s2">: </span><span class="s4">&quot;фэнтези&quot;</span><span class="s2">, </span><span class="s4">&quot;mood&quot;</span><span class="s2">: </span><span class="s4">&quot;волшебное&quot;</span><span class="s2">, </span><span class="s4">&quot;year&quot;</span><span class="s2">: </span><span class="s4">&quot;старый&quot;</span><span class="s2">, </span><span class="s4">&quot;image&quot;</span><span class="s2">: </span><span class="s4">&quot;images/harry_potter.jpg&quot;</span><span class="s2">},</span>
+    <span class="s2">{</span><span class="s4">&quot;title&quot;</span><span class="s2">: </span><span class="s4">&quot;Джокер&quot;</span><span class="s2">, </span><span class="s4">&quot;genre&quot;</span><span class="s2">: </span><span class="s4">&quot;драма&quot;</span><span class="s2">, </span><span class="s4">&quot;mood&quot;</span><span class="s2">: </span><span class="s4">&quot;серьёзное&quot;</span><span class="s2">, </span><span class="s4">&quot;year&quot;</span><span class="s2">: </span><span class="s4">&quot;новый&quot;</span><span class="s2">, </span><span class="s4">&quot;image&quot;</span><span class="s2">: </span><span class="s4">&quot;images/joker.jpg&quot;</span><span class="s2">},</span>
+    <span class="s2">{</span><span class="s4">&quot;title&quot;</span><span class="s2">: </span><span class="s4">&quot;Коко&quot;</span><span class="s2">, </span><span class="s4">&quot;genre&quot;</span><span class="s2">: </span><span class="s4">&quot;мультфильм&quot;</span><span class="s2">, </span><span class="s4">&quot;mood&quot;</span><span class="s2">: </span><span class="s4">&quot;доброе&quot;</span><span class="s2">, </span><span class="s4">&quot;year&quot;</span><span class="s2">: </span><span class="s4">&quot;новый&quot;</span><span class="s2">, </span><span class="s4">&quot;image&quot;</span><span class="s2">: </span><span class="s4">&quot;images/coco.jpg&quot;</span><span class="s2">},</span>
+<span class="s2">]</span>
+
+<span class="s2">@</span><span class="s1">app</span><span class="s2">.</span><span class="s1">route</span><span class="s2">(</span><span class="s4">'/'</span><span class="s2">)</span>
+<span class="s0">def </span><span class="s1">index</span><span class="s2">():</span>
+    <span class="s0">return </span><span class="s1">render_template</span><span class="s2">(</span><span class="s4">&quot;index.html&quot;</span><span class="s2">)</span>
+
+<span class="s2">@</span><span class="s1">app</span><span class="s2">.</span><span class="s1">route</span><span class="s2">(</span><span class="s4">'/recommend'</span><span class="s2">, </span><span class="s1">methods</span><span class="s2">=[</span><span class="s4">'POST'</span><span class="s2">])</span>
+<span class="s0">def </span><span class="s1">recommend</span><span class="s2">():</span>
+    <span class="s1">genre </span><span class="s2">= </span><span class="s1">request</span><span class="s2">.</span><span class="s1">form</span><span class="s2">[</span><span class="s4">'genre'</span><span class="s2">]</span>
+    <span class="s1">mood </span><span class="s2">= </span><span class="s1">request</span><span class="s2">.</span><span class="s1">form</span><span class="s2">[</span><span class="s4">'mood'</span><span class="s2">]</span>
+    <span class="s1">year </span><span class="s2">= </span><span class="s1">request</span><span class="s2">.</span><span class="s1">form</span><span class="s2">[</span><span class="s4">'year'</span><span class="s2">]</span>
+
+    <span class="s3"># Собираем все фильмы с хотя бы одним совпадением</span>
+    <span class="s1">matching_movies </span><span class="s2">= []</span>
+    <span class="s0">for </span><span class="s1">movie </span><span class="s0">in </span><span class="s1">movies</span><span class="s2">:</span>
+        <span class="s1">score </span><span class="s2">= </span><span class="s5">0</span>
+        <span class="s0">if </span><span class="s1">movie</span><span class="s2">[</span><span class="s4">&quot;genre&quot;</span><span class="s2">] == </span><span class="s1">genre</span><span class="s2">:</span>
+            <span class="s1">score </span><span class="s2">+= </span><span class="s5">1</span>
+        <span class="s0">if </span><span class="s1">movie</span><span class="s2">[</span><span class="s4">&quot;mood&quot;</span><span class="s2">] == </span><span class="s1">mood</span><span class="s2">:</span>
+            <span class="s1">score </span><span class="s2">+= </span><span class="s5">1</span>
+        <span class="s0">if </span><span class="s1">movie</span><span class="s2">[</span><span class="s4">&quot;year&quot;</span><span class="s2">] == </span><span class="s1">year</span><span class="s2">:</span>
+            <span class="s1">score </span><span class="s2">+= </span><span class="s5">1</span>
+
+        <span class="s0">if </span><span class="s1">score </span><span class="s2">&gt; </span><span class="s5">0</span><span class="s2">:</span>
+            <span class="s1">matching_movies</span><span class="s2">.</span><span class="s1">append</span><span class="s2">((</span><span class="s1">score</span><span class="s2">, </span><span class="s1">movie</span><span class="s2">))</span>
+
+    <span class="s0">if </span><span class="s1">matching_movies</span><span class="s2">:</span>
+        <span class="s3"># Выбираем фильм с максимальным совпадением</span>
+        <span class="s1">max_score </span><span class="s2">= </span><span class="s1">max</span><span class="s2">(</span><span class="s1">matching_movies</span><span class="s2">, </span><span class="s1">key</span><span class="s2">=</span><span class="s0">lambda </span><span class="s1">x</span><span class="s2">: </span><span class="s1">x</span><span class="s2">[</span><span class="s5">0</span><span class="s2">])[</span><span class="s5">0</span><span class="s2">]</span>
+        <span class="s1">best_movies </span><span class="s2">= [</span><span class="s1">m</span><span class="s2">[</span><span class="s5">1</span><span class="s2">] </span><span class="s0">for </span><span class="s1">m </span><span class="s0">in </span><span class="s1">matching_movies </span><span class="s0">if </span><span class="s1">m</span><span class="s2">[</span><span class="s5">0</span><span class="s2">] == </span><span class="s1">max_score</span><span class="s2">]</span>
+        <span class="s1">recommended </span><span class="s2">= </span><span class="s1">random</span><span class="s2">.</span><span class="s1">choice</span><span class="s2">(</span><span class="s1">best_movies</span><span class="s2">)</span>
+    <span class="s0">else</span><span class="s2">:</span>
+        <span class="s1">recommended </span><span class="s2">= {</span><span class="s4">&quot;title&quot;</span><span class="s2">: </span><span class="s4">&quot;Подходящий фильм не найден 😢 Попробуйте другие параметры!&quot;</span><span class="s2">, </span><span class="s4">&quot;image&quot;</span><span class="s2">: </span><span class="s4">&quot;images/not_found.jpg&quot;</span><span class="s2">}</span>
+
+    <span class="s0">return </span><span class="s1">render_template</span><span class="s2">(</span><span class="s4">&quot;result.html&quot;</span><span class="s2">, </span><span class="s1">movie</span><span class="s2">=</span><span class="s1">recommended</span><span class="s2">)</span>
+
+<span class="s0">if </span><span class="s1">__name__ </span><span class="s2">== </span><span class="s4">'__main__'</span><span class="s2">:</span>
+    <span class="s1">app</span><span class="s2">.</span><span class="s1">run</span><span class="s2">(</span><span class="s1">debug</span><span class="s2">=</span><span class="s0">True</span><span class="s2">)</span>
+</pre>
+</body>
+</html>

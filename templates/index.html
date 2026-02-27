@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Эксперт по фильмам</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+    <h1>🎬 Экспертная система подбора фильмов</h1>
+
+    <!-- Форма выбора -->
+    <form action="/recommend" method="post">
+        <label>Выберите жанр:</label>
+        <select name="genre">
+            <option value="комедия">Комедия</option>
+            <option value="ужасы">Ужасы</option>
+            <option value="фантастика">Фантастика</option>
+            <option value="романтика">Романтика</option>
+            <option value="боевик">Боевик</option>
+            <option value="фэнтези">Фэнтези</option>
+            <option value="драма">Драма</option>
+            <option value="мультфильм">Мультфильм</option>
+        </select>
+
+        <label>Какое настроение?</label>
+        <select name="mood">
+            <option value="весёлое">Весёлое</option>
+            <option value="страшное">Страшное</option>
+            <option value="серьёзное">Серьёзное</option>
+            <option value="грустное">Грустное</option>
+            <option value="захватывающее">Захватывающее</option>
+            <option value="волшебное">Волшебное</option>
+            <option value="доброе">Доброе</option>
+        </select>
+
+        <label>Какой фильм?</label>
+        <select name="year">
+            <option value="новый">Новый</option>
+            <option value="старый">Старый</option>
+        </select>
+
+        <button type="submit">🎥 Подобрать фильм</button>
+    </form>
+
+    <!-- Кнопка случайного фильма -->
+    <a href="/random" class="extra-btn">🎲 Случайный фильм</a>
+</div>
+
+<!-- Нижний блок "В тренде" -->
+<div class="trending-section">
+    <h1>🔥 Сейчас в тренде</h1>
+    <div class="movies-row">
+        {% for movie in trending %}
+        <div class="trend-card">
+            <img src="{{ url_for('static', filename=movie.image) }}">
+            <p>⭐ {{ movie.rating }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+</body>
+</html>
